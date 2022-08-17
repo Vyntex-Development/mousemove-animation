@@ -265,6 +265,7 @@ h3 {
 .container:nth-of-type(2) {
   background-color: rgb(53, 101, 143);
   width: 100%;
+  overflow: hidden;
 }
 
 .container:nth-of-type(2) a {
@@ -277,6 +278,11 @@ h3 {
   border: none;
   background-color: aquamarine;
 }
+
+/* .container:nth-of-type(2):hover a {
+  opacity: 1;
+  pointer-events: auto;
+} */
 
 .container:nth-of-type(3) {
   background-color: rgb(16, 51, 82);

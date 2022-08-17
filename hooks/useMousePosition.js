@@ -8,8 +8,10 @@ const useMousePosition = () => {
       event.preventDefault();
       setMousePosition({
         ...mousePosition,
-        x: event.clientX,
-        y: event.clientY,
+        x: event.pageX,
+        y: event.pageY,
+        clientX: event.clientX,
+        clientY: event.clientY,
       });
     };
 

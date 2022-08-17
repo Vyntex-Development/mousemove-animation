@@ -9,10 +9,8 @@ import { data } from "../data/nav-data";
 import useMousePosition from "../hooks/useMousePosition";
 
 const Home = () => {
-  const { x, y } = useMousePosition();
+  const { x, y, clientX, clientY } = useMousePosition();
   const [withChangeValue, setWidthChangeValue] = useState(1);
-  const [mouseEnter, setMouseEnter] = useState(false);
-  const [transform, setTransform] = useState({ x: 0, y: 0 });
   const ref1 = useRef();
   const wraperRef = useRef();
   const buttonRef = useRef();
@@ -22,24 +20,26 @@ const Home = () => {
     fallbackInView: true,
   });
 
-  console.log(x, y);
-
   useEffect(() => {
-    //const handleMouseMove = () => {
-    if (mouseEnter) {
-      buttonRef.current.style.opacity = "1";
-      buttonRef.current.style.pointerEvents = "auto";
-    } else {
+    const handleMouseMove = () => {
+      let containerTop = containerRef.current.offsetTop;
+      let containerBottom =
+        containerRef.current.offsetTop + containerRef.current.offsetHeight;
+      // CHECK if element is inside container
+      if (y > containerTop && y < containerBottom) {
+        buttonRef.current.style.opacity = "1";
+        buttonRef.current.style.pointerEvents = "auto";
+        return;
+      }
       buttonRef.current.style.opacity = "0";
       buttonRef.current.style.pointerEvents = "none";
-    }
-    //};
-    //window.addEventListener("mousemove", handleMouseMove);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
 
-    //return () => {
-    // window.removeEventListener("mousemove", handleMouseMove);
-    //};
-  }, [mouseEnter]);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [y]);
 
   // useEffect(() => {
   //   const handleMouseMove = (ev) => {
@@ -88,16 +88,16 @@ const Home = () => {
       <div className="container"></div>
       <div
         className="container"
-        onMouseEnter={() => setMouseEnter(true)}
-        onMouseLeave={() => setMouseEnter(false)}
+        // onMouseEnter={() => setMouseEnter(true)}
+        // onMouseLeave={() => setMouseEnter(false)}
         ref={containerRef}
       >
         <a
           href="https://www.javascripttutorial.net/javascript-dom/javascript-width-height/"
           style={{
             transform: `translate(${
-              x - buttonRef.current?.offsetWidth / 2
-            }px, ${y - buttonRef.current?.offsetHeight / 2}px)`,
+              clientX - buttonRef.current?.offsetWidth / 2
+            }px, ${clientY - buttonRef.current?.offsetHeight / 2}px)`,
           }}
           ref={buttonRef}
         >
